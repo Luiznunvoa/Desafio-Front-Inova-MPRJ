@@ -10,7 +10,7 @@ export function BrowserRouter() {
       element: (
         <>
           <Header />
-          <main className="flex flex-col items-center">
+          <main className="flex flex-col items-center justify-center w-full bg-back1">
             <Outlet />
           </main>
           <Footer />

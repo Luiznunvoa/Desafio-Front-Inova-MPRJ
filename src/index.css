@@ -1,5 +1,26 @@
 @import "tailwindcss";
 
+@theme {
+  --font-display: "Roboto", "sans-serif";
+  --color-primary: #1e3248;
+  --color-secundary: #2b60a5;
+  --color-back2: #f3f4f4;
+  --color-back1: #e7e6e9;
+}
+
+@layer base {
+  h1 {
+    font-size: var(--text-4xl);
+    color: var(--color-primary)
+  }
+  h2 {
+    font-size: var(--text-xl);
+  }
+  p {
+    font-size: var(--text-lg)
+  }
+}
+
 .bg-banner {
   background-image: url("https://i.postimg.cc/bN25qYgT/banner.jpg");
   background-size: cover;
