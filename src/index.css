@@ -1,1 +1,8 @@
 @import "tailwindcss";
+
+.bg-banner {
+  background-image: url("https://i.postimg.cc/bN25qYgT/banner.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
