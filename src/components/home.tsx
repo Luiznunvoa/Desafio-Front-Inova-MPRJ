@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 export function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-10 items-center py-10 w-full w-ful max-w-[1920px] bg-back1">
-      <h1 className="m-5 w-5/6 font-bold">
+    <div className="flex flex-col gap-10 items-center py-10 m-20 w-full max-w-[1920px] bg-back1">
+      <h1 className="m-5 w-5/6">
         Interface de Análise de Compras Diretas por Município
       </h1>
       <p className="w-5/6 text-secundary">
@@ -13,20 +13,31 @@ export function Home() {
         o processo de contratação, mas podem aumentar o risco de irregularidades
         no uso dos recursos públicos. Desta forma, compras diretas devem ser
         analisadas de maneira minuciosa, garantindo o uso adequado do dinheiro
-        público
+        público.
       </p>
       <div className="w-5/6">
-        <button 
+        <button
           onClick={() => navigate("/dashboard")}
-          className="py-3 px-6 text-white rounded-lg transition bg-primary hover:bg-primary-dark"
         >
           Acessar Dashboard
         </button>
       </div>
 
-      <h1 className="m-5 w-5/6 font-bold">
-        Dados Gerais da Análise
-      </h1>
+      <h1 className="m-5 w-5/6">Descrição da Análise</h1>
+      <p className="w-5/6 text-secundary">
+        Através do consumo da API de
+        <a href="https://dados.tcerj.tc.br/api/v1/docs#/">
+          {" Dados Abertos do TCE-RJ "}
+        </a>
+        esse website faz um cruzamento de dados em relação às informações mais
+        relevantes obtidas através do endpoint
+        <code>{" compras_diretas_estado"}</code>. A análise considera os gastos
+        totais realizados, bem como os gastos por município, permitindo
+        identificar padrões e discrepâncias no uso dos recursos. Além disso, é
+        dada atenção à tendência desses dados ao longo do tempo, possibilitando
+        uma visão dinâmica e temporal do comportamento das compras diretas e
+        eventuais alterações em suas trajetórias.
+      </p>
     </div>
   );
 }

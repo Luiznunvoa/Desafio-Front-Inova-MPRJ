@@ -12,7 +12,8 @@
     "paths": {
       "components/*": ["src/components/*"],
       "assets/*": ["src/assets/*"],
-      "router/*": ["src/router/*"]
+      "router/*": ["src/router/*"],
+      "hooks/*": ["src/hooks/*"]
     },
 
     /* Bundler mode */
