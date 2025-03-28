@@ -1,6 +1,5 @@
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 import { Header } from "components/ui/header";
-import { Footer } from "components/ui/footer";
 import { Home } from "components/home";
 import { Dashboard } from "components/dashboard";
 
@@ -13,7 +12,6 @@ export function BrowserRouter() {
           <main className="flex flex-col items-center justify-center w-full bg-back1">
             <Outlet />
           </main>
-          <Footer />
         </>
       ),
       children: [
