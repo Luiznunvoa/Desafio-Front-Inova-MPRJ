@@ -19,4 +19,6 @@ export type PurchaseRecord = {
 export type CityData = {
   Nome: string;
   ValorTotalEmCompras: number;
+  TotalDeCompras?: number;
+  Compras?: PurchaseRecord[];
 }

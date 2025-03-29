@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 export function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-10 items-center py-10 m-20 w-full max-w-[1920px] bg-back1">
+    <div className="flex flex-col gap-10 items-center py-10 m-20 max-w-[1920px]">
       <h1 className="m-5 w-5/6">
         Interface de Análise de Compras Diretas por Município
       </h1>
@@ -16,11 +16,7 @@ export function Home() {
         público.
       </p>
       <div className="w-5/6">
-        <button
-          onClick={() => navigate("/dashboard")}
-        >
-          Acessar Dashboard
-        </button>
+        <button onClick={() => navigate("/dashboard")}>Acessar Dashboard</button>
       </div>
 
       <h1 className="m-5 w-5/6">Descrição da Análise</h1>
