@@ -3,6 +3,7 @@ import { Header } from "components/ui/header";
 import { Home } from "components/home";
 import { List } from "components/list";
 import { Dashboard } from "components/dashboard";
+import { SecureData } from "./middlewares";
 
 export function BrowserRouter() {
   const router = createBrowserRouter([
@@ -20,6 +21,18 @@ export function BrowserRouter() {
           path: "/",
           element: <Home />,
         },
+      ],
+    },
+    {
+      element: (
+        <SecureData>
+          <Header />
+          <main className="flex flex-col items-center justify-center w-full">
+            <Outlet />
+          </main>
+        </SecureData>
+      ),
+      children: [
         {
           path: "/dashboard",
           element: <List />,

@@ -1,21 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { CityData, PurchaseRecord } from "src/types/PurchaseRecord";
+import { useCityStore } from "../stores/cityStore";
+import { CityData, PurchaseRecord } from "../types/PurchaseRecord";
 
 export function useData() {
-  const processData = (data: PurchaseRecord[]) => {
-    const citiesMap: Record<string, number> = {};
+  const processData = (data: PurchaseRecord[]): CityData[] => {
+    // Cria um mapa para armazenar os dados de cada cidade
+    const citiesMap: Record<
+      string,
+      { total: number; count: number; purchases: PurchaseRecord[] }
+    > = {};
 
     data.forEach((record) => {
       if (record.Municipio) {
-        citiesMap[record.Municipio] =
-          (citiesMap[record.Municipio] || 0) + record.ValorTotalCompra;
+        if (!citiesMap[record.Municipio]) {
+          citiesMap[record.Municipio] = { total: 0, count: 0, purchases: [] };
+        }
+        citiesMap[record.Municipio].total += record.ValorTotalCompra;
+        citiesMap[record.Municipio].count += 1;
+        citiesMap[record.Municipio].purchases.push(record);
       }
     });
 
     return Object.keys(citiesMap).map((municipio) => ({
       Nome: municipio,
-      ValorTotalEmCompras: citiesMap[municipio],
+      ValorTotalEmCompras: citiesMap[municipio].total,
+      TotalDeCompras: citiesMap[municipio].count,
+      Compras: citiesMap[municipio].purchases,
     }));
   };
 
@@ -23,10 +34,15 @@ export function useData() {
     queryKey: ["comprasDiretasEstado"],
     queryFn: async () => {
       const response = await axios.get<{ Compras: PurchaseRecord[] }>(
-        import.meta.env.VITE_BACKEND_URL,
+        import.meta.env.VITE_BACKEND_URL
       );
-      return processData(response.data.Compras);
+      const cleanedData = processData(response.data.Compras);
+
+      // Atualiza o store com os dados processados
+      useCityStore.getState().setCities(cleanedData);
+      return cleanedData;
     },
     staleTime: Infinity,
   });
 }
+

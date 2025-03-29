@@ -12,12 +12,13 @@ export function CityArray({ data }: { data: CityData[] }) {
           data.map((city) => (
             <div
               key={city.Nome}
-              className="p-6 px-10 bg-white rounded-lg shadow-md transition-shadow hover:shadow-lg"
+              className="p-6 px-10 bg-white rounded-lg shadow-md transition-shadow hover:shadow-lg w-[50rem]"
             >
               <h2 className="text-2xl font-bold text-primary">{city.Nome}</h2>
+              <p>Total de Compras Diretas: <b>{city.TotalDeCompras}</b> </p>
               <div className="flex flex-row justify-between items-center">
                 <p className="mt-2 text-lg">
-                  {" Gasto total: "}
+                  {" Gasto Total com Compras Diretas: "}
                   <span className="font-semibold">
                     {formatCurrency(city.ValorTotalEmCompras)}
                   </span>

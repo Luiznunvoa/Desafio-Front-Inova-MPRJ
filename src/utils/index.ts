@@ -7,12 +7,25 @@ export function formatCurrency(value: number): string {
   }).format(value);
 }
 
-export function sortData(data: CityData[], sortType: "alphabetical" | "valor", searchTerm: string) {
-  let sortedData: CityData[]; 
+export function sortData(
+  data: CityData[],
+  sortType: "alphabetical" | "valor" | "compras",
+  searchTerm: string
+) {
+  let sortedData: CityData[];
+
   if (sortType === "alphabetical") {
     sortedData = [...data].sort((a, b) => a.Nome.localeCompare(b.Nome));
+  } else if (sortType === "valor") {
+    sortedData = [...data].sort(
+      (a, b) => b.ValorTotalEmCompras - a.ValorTotalEmCompras
+    );
+  } else if (sortType === "compras") {
+    sortedData = [...data].sort(
+      (a, b) => (b.TotalDeCompras ?? 0) - (a.TotalDeCompras ?? 0)
+    );
   } else {
-    sortedData = [...data].sort((a, b) => b.ValorTotalEmCompras - a.ValorTotalEmCompras);
+    sortedData = [...data];
   }
 
   const filteredCities = sortedData.filter((city) =>

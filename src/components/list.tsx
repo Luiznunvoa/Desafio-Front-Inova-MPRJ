@@ -1,18 +1,13 @@
 import { useState } from "react";
-import { Spinner } from "./ui/spinner";
 import { sortData } from "../utils";
-import { useData } from "hooks/useData";
 import { CityArray } from "./ui/cityArray";
+import { useCityStore } from "../stores/cityStore";
 
 export function List() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortType, setSortType] = useState<"alphabetical" | "valor">("alphabetical");
-  const { data, isLoading, isError } = useData();
-
-  if (isLoading) return <Spinner />;
-  if (isError || !data) return <>Ocorreu um erro ao buscar os dados.</>;
-
-  const sortedData = sortData(data, sortType, searchTerm);
+  const [sortType, setSortType] = useState<"alphabetical" | "valor" | "compras">("alphabetical");
+  const cities = useCityStore((state) => state.cities);
+  const sortedData = sortData(cities, sortType, searchTerm);
 
   return (
     <div className="p-4">
@@ -29,16 +24,18 @@ export function List() {
         <select
           value={sortType}
           onChange={(e) =>
-            setSortType(e.target.value as "alphabetical" | "valor")
+            setSortType(e.target.value as "alphabetical" | "valor" | "compras")
           }
           className="p-2 w-full rounded-lg border border-gray-300 focus:ring-2 focus:outline-none focus:ring-primary"
         >
           <option value="alphabetical">Ordem Alfabética</option>
           <option value="valor">Valor Total Gasto</option>
+          <option value="compras">Número Total de Compras</option>
         </select>
       </div>
 
-      <CityArray data={sortedData}/>
+      <CityArray data={sortedData} />
     </div>
   );
 }
+
