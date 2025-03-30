@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 export function Home() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col gap-10 items-center py-10 m-20 max-w-[1920px]">
-      <h1 className="m-5 w-5/6">
+    <div className="flex flex-col gap-10 items-center py-10 md:m-20 m-5 max-w-[1920px]">
+      <h1 className="m-5 md:w-5/6 w-full">
         Interface de Análise de Compras Diretas por Município
       </h1>
       <p className="w-5/6 text-secundary">

@@ -5,7 +5,9 @@ import { useCityStore } from "../stores/cityStore";
 
 export function List() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortType, setSortType] = useState<"alphabetical" | "valor" | "compras">("alphabetical");
+  const [sortType, setSortType] = useState<
+    "alphabetical" | "valor" | "compras"
+  >("alphabetical");
   const cities = useCityStore((state) => state.cities);
   const sortedData = sortData(cities, sortType, searchTerm);
 
@@ -38,4 +40,3 @@ export function List() {
     </div>
   );
 }
-

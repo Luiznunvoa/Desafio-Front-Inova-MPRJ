@@ -45,4 +45,3 @@ export function useData() {
     staleTime: Infinity,
   });
 }
-
