@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCityStore } from "../stores/cityStore";
 import { useState } from "react";
 import { RecordArray } from "./ui/recordArray";
 
 export function Dashboard() {
   const { city } = useParams<{ city: string }>();
+  const navigate = useNavigate();
   const cities = useCityStore((state) => state.cities);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFornecedor, setSelectedFornecedor] = useState("");
@@ -12,82 +13,67 @@ export function Dashboard() {
   const [selectedUnidade, setSelectedUnidade] = useState("");
 
   if (!city) return <>Erro inesperado!</>;
-
   const selectedCity = cities.find((c) => c.Nome === city);
   if (!selectedCity) return <>Cidade não encontrada!</>;
 
+  // Função que verifica se a compra corresponde ao termo de busca
   const matchesSearchTerm = (compra: any) =>
     compra.Objeto.toLowerCase().includes(searchTerm.toLowerCase()) ||
     compra.Fornecedor.toLowerCase().includes(searchTerm.toLowerCase()) ||
     compra.EnquadramentoLegal.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const dynamicFornecedorOptions = Array.from(
-    new Set(
-      selectedCity.Compras &&
-      selectedCity.Compras.filter((compra) => {
-        return (
-          matchesSearchTerm(compra) &&
-          // Para fornecedor, consideramos os outros filtros (Enquadramento e Unidade)
-          (selectedEnquadramento === "" ||
-            compra.EnquadramentoLegal === selectedEnquadramento) &&
-          (selectedUnidade === "" || compra.Unidade === selectedUnidade)
-        );
-      }).map((compra) => compra.Fornecedor),
-    ),
-  );
+  // Função que verifica os filtros (além do termo de busca)
+  const matchesFilters = (compra: any) =>
+    matchesSearchTerm(compra) &&
+    (selectedFornecedor === "" || compra.Fornecedor === selectedFornecedor) &&
+    (selectedEnquadramento === "" || compra.EnquadramentoLegal === selectedEnquadramento) &&
+    (selectedUnidade === "" || compra.Unidade === selectedUnidade);
 
-  const dynamicEnquadramentoOptions = Array.from(
-    new Set(
-      selectedCity.Compras &&
-      selectedCity.Compras.filter((compra) => {
-        return (
-          matchesSearchTerm(compra) &&
-          // Para enquadramento, consideramos os outros filtros (Fornecedor e Unidade)
-          (selectedFornecedor === "" ||
-            compra.Fornecedor === selectedFornecedor) &&
-          (selectedUnidade === "" || compra.Unidade === selectedUnidade)
-        );
-      }).map((compra) => compra.EnquadramentoLegal),
-    ),
-  );
-
-  const dynamicUnidadeOptions = Array.from(
-    new Set(
-      selectedCity.Compras &&
-      selectedCity.Compras.filter((compra) => {
-        return (
-          matchesSearchTerm(compra) &&
-          // Para unidade, consideramos os outros filtros (Fornecedor e Enquadramento)
-          (selectedFornecedor === "" ||
-            compra.Fornecedor === selectedFornecedor) &&
-          (selectedEnquadramento === "" ||
-            compra.EnquadramentoLegal === selectedEnquadramento)
-        );
-      }).map((compra) => compra.Unidade),
-    ),
-  );
-
-  // Filtro final considerando todos os critérios
-  const filteredPurchases = selectedCity.Compras?.filter((compra) => {
-    const filtroFornecedor =
-      selectedFornecedor === "" || compra.Fornecedor === selectedFornecedor;
-    const filtroEnquadramento =
-      selectedEnquadramento === "" ||
-      compra.EnquadramentoLegal === selectedEnquadramento;
-    const filtroUnidade =
-      selectedUnidade === "" || compra.Unidade === selectedUnidade;
-
-    return (
-      matchesSearchTerm(compra) &&
-      filtroFornecedor &&
-      filtroEnquadramento &&
-      filtroUnidade
+  // Função genérica para gerar as opções dinâmicas de filtro
+  // field: nome da propriedade que queremos extrair (ex.: "Fornecedor")
+  // extraFilters: array de objetos com { key, value } dos filtros que devem ser aplicados, exceto o filtro em foco
+  const getDynamicOptions = (
+    field: string,
+    extraFilters: { key: string; value: string }[]
+  ) => {
+    return Array.from(
+      new Set(
+        selectedCity.Compras?.filter((compra: any) => {
+          if (!matchesSearchTerm(compra)) return false;
+          // Aplica os filtros extras
+          return extraFilters.every(
+            ({ key, value }) => value === "" || compra[key] === value
+          );
+        }).map((compra: any) => compra[field])
+      )
     );
-  });
+  };
+
+  // Gerando as opções dinâmicas para cada filtro
+  const dynamicFornecedorOptions = getDynamicOptions("Fornecedor", [
+    { key: "EnquadramentoLegal", value: selectedEnquadramento },
+    { key: "Unidade", value: selectedUnidade },
+  ]);
+
+  const dynamicEnquadramentoOptions = getDynamicOptions("EnquadramentoLegal", [
+    { key: "Fornecedor", value: selectedFornecedor },
+    { key: "Unidade", value: selectedUnidade },
+  ]);
+
+  const dynamicUnidadeOptions = getDynamicOptions("Unidade", [
+    { key: "Fornecedor", value: selectedFornecedor },
+    { key: "EnquadramentoLegal", value: selectedEnquadramento },
+  ]);
+
+  // Filtrando as compras com todos os critérios
+  const filteredPurchases = selectedCity.Compras?.filter(matchesFilters);  
 
   return (
     <div className="p-4">
-      <h1 className="my-6 text-3xl font-bold">{selectedCity.Nome}</h1>
+      <div className="flex flex-row justify-between items-center">
+        <h1 className="my-6 text-3xl font-bold">{selectedCity.Nome}</h1>
+        <h2 className="mb-4 text-2xl cursor-pointer" onClick={() => navigate("/dashboard")}>Voltar</h2>
+      </div>
       <h2 className="mb-4 text-2xl">Registros de Compra:</h2>
 
       {/* Área de filtros */}
