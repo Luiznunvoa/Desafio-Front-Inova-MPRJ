@@ -30,17 +30,37 @@ Para executar a aplicação web, siga os passos abaixo:
    ```sh
    git clone https://github.com/Luiznunvoa/Desafio-Front-Inova-MPRJ/
    ```
-2. Renomear o arquivo oculto `.env.example` para `.env`.
-3. Instalar as dependências do projeto:  
+2. Acessar o repositório:  
+   ```sh
+   cd Desafio-Front-Inova-MPRJ
+   ```
+3. Renomear o arquivo oculto `.env.example` para `.env`.
+   - No Linux bash:
+      ```sh
+      cp env.example .env
+      ```
+   - No windows cmd
+      ```sh
+      copy env.example .env
+      ```
+5. Instalar as dependências do projeto:  
    ```sh
    npm install
    ```
-4. Executar o projeto:  
+6. Executar o projeto:  
    ```sh
    npm run dev
    ```
-5. Acessar a URL exibida no console para visualizar a aplicação.
 
+7. Acessar a URL exibida no console para visualizar a aplicação.
+   - Se tudo estivar funcionado corretamente será a url no campo "Local":
+      ```
+           VITE v6.2.3  ready in 272 ms
+      
+      ➜  Local:   http://localhost:5173/
+      ➜  Network: use --host to expose
+      ➜  press h + enter to show help
+      ```
 ## Observação
 
 Atualmente, o projeto obtém os dados a partir de um arquivo JSON localizado na pasta `data` no diretório raiz do projeto. Para recriar os dados, execute o seguinte comando em um terminal Linux:
