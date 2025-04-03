@@ -37,11 +37,11 @@ Para executar a aplicação web, siga os passos abaixo:
 3. Renomear o arquivo oculto `.env.example` para `.env`.
    - No Linux bash:
       ```sh
-      cp env.example .env
+      cp .env.example .env
       ```
-   - No windows cmd
+   - No Windows cmd
       ```sh
-      copy env.example .env
+      copy .env.example .env
       ```
 5. Instalar as dependências do projeto:  
    ```sh
